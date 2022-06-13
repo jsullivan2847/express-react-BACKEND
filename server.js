@@ -30,16 +30,25 @@ app.get('/', (req,res) => {
 //Index
 app.get('/people', async (req,res) => {
     try{
-        res.json(await People.find({}));
+        const people = await People.find({});
+        res.send(people);
     } catch (error) {
-        res.status(400).json(error);
+        res.send(error);
     }
 })
+
+//callbackmethod
+// app.get('/people', async (req,res) => {
+//     People.find({}, (error,people) => {
+//         res.send(people);
+//     });
+// })
 
 //Create
 app.post('/people', async (req,res) => {
     try{
-        res.json(await People.create(req.body));
+        const person = await People.create(req.body);
+        res.send(person);
     } catch (error) {
         res.status(400).json(error);
     }
@@ -50,6 +59,6 @@ app.post('/people', async (req,res) => {
 
 
 //Listen
-app.listen(PORT, ()=> {
+app.listen(PORT, () => {
     console.log('express is listening at', PORT)
 });
