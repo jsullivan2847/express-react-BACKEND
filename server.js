@@ -24,14 +24,34 @@ app.use(express.json());
 
 //Routes
 app.get('/', (req,res) => {
-    res.send('working');
+    res.send('hello world');
 });
 
 //Index
 app.get('/people', async (req,res) => {
     try{
-        const people = await People.find({});
-        res.send(people);
+        res.json(await People.find({}));
+    } catch (error) {
+        res.send(error);
+    }
+})
+
+//Update
+app.put('/people/:id', async (req,res) => {
+    try{
+        res.json(await 
+            People.findByIdAndUpdate(
+                req.params.id, req.body, {new: true})
+                );
+    } catch (error) {
+        res.send(error);
+    }
+});
+
+//Delete
+app.delete('/people/:id', async (req,res) => {
+    try{
+        res.json(await People.findByIdAndRemove(req.params.id));
     } catch (error) {
         res.send(error);
     }
@@ -47,10 +67,9 @@ app.get('/people', async (req,res) => {
 //Create
 app.post('/people', async (req,res) => {
     try{
-        const person = await People.create(req.body);
-        res.send(person);
+        res.json(await People.create(req.body));
     } catch (error) {
-        res.status(400).json(error);
+        res.send(error);
     }
 });
 
